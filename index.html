@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>Geocoding Service</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./script.js"></script>
+  </head>
+  <body>
+    <section>
+      <div class="container">
+        <textarea
+          name=""
+          id=""
+          class="addresses"
+          cols="30"
+          rows="10"
+          placeholder="Your addresses here...."
+        ></textarea>
+        <div class="btn-wrapper">
+          <button type="submit" class="magic buttons">Magic</button>
+          <button type="submit" class="reset buttons">Reset</button>
+        </div>
+
+        <textarea name="" id="" cols="30" rows="10" class="myResults">
+        </textarea>
+      </div>
+    </section>
+
+    <div id="map"></div>
+
+    <!-- 
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises.
+      See https://developers.google.com/maps/documentation/javascript/load-maps-js-api
+      for more information.
+      -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </body>
+</html>
