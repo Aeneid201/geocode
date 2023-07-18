@@ -104,7 +104,7 @@ function geocode(request) {
       let location = results[0].geometry.location;
       const longitude = location.lng();
       const latitude = location.lat();
-      let coords = `${longitude},${latitude}`;
+      let coords = `${latitude},${longitude}`;
       myResultsTextarea.value += "\n" + coords;
       return results;
     })
