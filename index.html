@@ -13,27 +13,47 @@
     <script type="module" src="./script.js"></script>
   </head>
   <body>
-    <section>
+    <div class="btn-wrapper">
+      <button class="buttons switch">Switch</button>
+    </div>
+    <section class="geocoding">
       <div class="container">
         <textarea
-          name=""
-          id=""
           class="addresses"
-          cols="30"
-          rows="10"
-          placeholder="Your addresses here...."
+          placeholder="Your addresses here (each in a new line)"
         ></textarea>
         <div class="btn-wrapper">
-          <button type="submit" class="magic buttons">Magic</button>
+          <button type="submit" class="magic buttons">Geocode</button>
           <button type="submit" class="reset buttons">Reset</button>
         </div>
 
-        <textarea name="" id="" cols="30" rows="10" class="myResults">
-        </textarea>
+        <textarea
+          placeholder="Your coordinates will display here (lat,long)"
+          class="myResults"
+        ></textarea>
       </div>
     </section>
 
-    <div id="map"></div>
+    <section class="reverseGeocoding d-none">
+      <div class="container">
+        <textarea
+          class="latlongs"
+          placeholder="Your coordinates here (lat,long => each in a new line)"
+        ></textarea>
+        <div class="btn-wrapper">
+          <button type="submit" class="reverse buttons">Reverse Geocode</button>
+          <button type="submit" class="reset buttons">Reset</button>
+        </div>
+
+        <textarea
+          placeholder="Your addresses will display here"
+          class="myAddresses"
+        ></textarea>
+      </div>
+    </section>
+
+    <!-- useful links -->
+    <!-- https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple -->
 
     <script type="text/javascript" src="config.js"></script>
   </body>

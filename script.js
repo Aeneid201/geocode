@@ -1,111 +1,106 @@
 "use strict";
-let map;
-let marker;
+
+// DOM
 let geocoder;
-let responseDiv;
-let response;
-
-function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 8,
-    center: { lat: -34.397, lng: 150.644 },
-    mapTypeControl: false,
-  });
-  geocoder = new google.maps.Geocoder();
-
-  const inputText = document.createElement("input");
-
-  inputText.type = "text";
-  inputText.placeholder = "Enter a location";
-
-  const submitButton = document.createElement("input");
-
-  submitButton.type = "button";
-  submitButton.value = "Geocode";
-  submitButton.classList.add("button", "button-primary");
-
-  const clearButton = document.createElement("input");
-
-  clearButton.type = "button";
-  clearButton.value = "Clear";
-  clearButton.classList.add("button", "button-secondary");
-  response = document.createElement("pre");
-  response.id = "response";
-  response.innerText = "";
-  responseDiv = document.createElement("div");
-  responseDiv.id = "response-container";
-  responseDiv.appendChild(response);
-
-  const instructionsElement = document.createElement("p");
-
-  instructionsElement.id = "instructions";
-  instructionsElement.innerHTML =
-    "<strong>Instructions</strong>: Enter an address in the textbox to geocode or click on the map to reverse geocode.";
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputText);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(submitButton);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(clearButton);
-  map.controls[google.maps.ControlPosition.LEFT_TOP].push(instructionsElement);
-  map.controls[google.maps.ControlPosition.LEFT_TOP].push(responseDiv);
-  marker = new google.maps.Marker({
-    map,
-  });
-  map.addListener("click", (e) => {
-    geocode({ location: e.latLng });
-  });
-  submitButton.addEventListener("click", () =>
-    geocode({ address: inputText.value })
-  );
-  clearButton.addEventListener("click", () => {
-    clear();
-  });
-  clear();
-}
-
-function clear() {
-  marker.setMap(null);
-  responseDiv.style.display = "none";
-}
-
 const magic = document.querySelector(".magic");
 const addressesTextarea = document.querySelector(".addresses");
 const myResultsTextarea = document.querySelector(".myResults");
-const reset = document.querySelector(".reset");
+const reset = document.querySelector(".geocoding .reset");
+const latlongsTextarea = document.querySelector(".latlongs");
+const myAddressesTextarea = document.querySelector(".myAddresses");
+const switchButton = document.querySelector(".switch");
+const geocodingSection = document.querySelector(".geocoding");
+const reverseGeocodingSection = document.querySelector(".reverseGeocoding");
+const reverse = document.querySelector(".reverse");
+const resetCoord = document.querySelector(".reverseGeocoding .reset");
+
+// toggle geocoding and reverse geocoding sections
+switchButton.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (geocodingSection.classList.contains("d-none")) {
+    geocodingSection.classList.remove("d-none");
+    reverseGeocodingSection.classList.add("d-none");
+  } else {
+    geocodingSection.classList.add("d-none");
+    reverseGeocodingSection.classList.remove("d-none");
+  }
+});
+
+function init() {
+  geocoder = new google.maps.Geocoder();
+}
 
 reset.addEventListener("click", function (e) {
   e.preventDefault();
-
   addressesTextarea.value = "";
   myResultsTextarea.value = "";
 });
 
+resetCoord.addEventListener("click", function (e) {
+  e.preventDefault();
+  myAddressesTextarea.value = "";
+  latlongsTextarea.value = "";
+});
+
+// geocode addresses
 magic.addEventListener("click", function (e) {
   e.preventDefault();
 
+  myResultsTextarea.value = "";
+
   let addresses = addressesTextarea.value;
-  let arr = splitAddresses(addresses);
+  let arr = splitInput(addresses);
 
   arr.forEach((address) => {
     geocode({ address: address });
   });
 });
 
+// reverse geocode
+reverse.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  myAddressesTextarea.value = "";
+
+  let coords = latlongsTextarea.value;
+  let arr = splitInput(coords);
+
+  arr.forEach((coord) => {
+    geocodeLatLng(coord);
+  });
+});
+
+function geocodeLatLng(input) {
+  const latlngStr = input.split(",", 2);
+  const latlng = {
+    lat: parseFloat(latlngStr[0]),
+    lng: parseFloat(latlngStr[1]),
+  };
+
+  geocoder
+    .geocode({ location: latlng })
+    .then((response) => {
+      if (response.results[0]) {
+        let formattedAddress = response.results[0].formatted_address;
+        myAddressesTextarea.value += formattedAddress + "\n";
+      } else {
+        window.alert("No results found");
+      }
+    })
+    .catch((e) => window.alert("Geocoder failed due to: " + e));
+}
+
 function geocode(request) {
-  clear();
   geocoder
     .geocode(request)
     .then((result) => {
       const { results } = result;
-
-      //   map.setCenter(results[0].geometry.location);
-      //   marker.setPosition(results[0].geometry.location);
-      //   marker.setMap(map);
-      //   responseDiv.style.display = "block";
-      //   response.innerText = JSON.stringify(result, null, 2);
       let location = results[0].geometry.location;
       const longitude = location.lng();
       const latitude = location.lat();
       let coords = `${latitude},${longitude}`;
-      myResultsTextarea.value += "\n" + coords;
+      myResultsTextarea.value += coords + "\n";
       return results;
     })
     .catch((e) => {
@@ -113,9 +108,9 @@ function geocode(request) {
     });
 }
 
-function splitAddresses(str) {
+function splitInput(str) {
   let result = str.split(/\r?\n/);
   return result;
 }
 
-window.initMap = initMap;
+window.init = init;
