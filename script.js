@@ -5,6 +5,9 @@ let geocoder;
 let responseDiv;
 let response;
 
+const api_key = config.API_KEY;
+const body = document.querySelector("body");
+
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 8,
