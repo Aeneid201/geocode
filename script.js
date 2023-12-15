@@ -104,7 +104,9 @@ function geocode(request) {
       return results;
     })
     .catch((e) => {
-      alert("Geocode was not successful for the following reason: " + e);
+      //alert("Geocode was not successful for the following reason: " + e);
+      console.log("Geocode was not successful for the following reason: " + e);
+      console.log(request);
     });
 }
 

@@ -1,71 +1,59 @@
 <html>
-  <head>
-    <title>Geocode & Reverse Geocode</title>
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="Simple app for geocoding and reverse geocoding multiple values"
-    />
-    <meta name="keywords" content="Geocoding, reverse geocoding, Google Maps" />
-    <meta name="author" content="Oumaima Lairani" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <title>Geocode & Reverse Geocode</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <meta charset="UTF-8" />
+  <meta name="description" content="Simple app for geocoding and reverse geocoding multiple values" />
+  <meta name="keywords" content="Geocoding, reverse geocoding, Google Maps" />
+  <meta name="author" content="Oumaima Lairani" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <script type="module" src="./script.js"></script>
-  </head>
-  <body>
-    <div class="btn-wrapper">
-      <button class="buttons switch">Switch</button>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <script type="module" src="./script.js"></script>
+</head>
+
+<body>
+  <div class="btn-wrapper">
+    <button class="buttons switch">Switch</button>
+  </div>
+  <section class="geocoding">
+    <div class="container">
+      <textarea class="addresses" placeholder="Your addresses here (each in a new line)"></textarea>
+      <div class="btn-wrapper">
+        <button type="submit" class="magic buttons">Geocode</button>
+        <button type="submit" class="reset buttons">Reset</button>
+      </div>
+
+      <textarea placeholder="Your coordinates will display here (lat,long)" class="myResults"></textarea>
     </div>
-    <section class="geocoding">
-      <div class="container">
-        <textarea
-          class="addresses"
-          placeholder="Your addresses here (each in a new line)"
-        ></textarea>
-        <div class="btn-wrapper">
-          <button type="submit" class="magic buttons">Geocode</button>
-          <button type="submit" class="reset buttons">Reset</button>
-        </div>
+  </section>
 
-        <textarea
-          placeholder="Your coordinates will display here (lat,long)"
-          class="myResults"
-        ></textarea>
+  <section class="reverseGeocoding d-none">
+    <div class="container">
+      <textarea class="latlongs" placeholder="Your coordinates here (lat,long => each in a new line)"></textarea>
+      <div class="btn-wrapper">
+        <button type="submit" class="reverse buttons">Reverse Geocode</button>
+        <button type="submit" class="reset buttons">Reset</button>
       </div>
-    </section>
 
-    <section class="reverseGeocoding d-none">
-      <div class="container">
-        <textarea
-          class="latlongs"
-          placeholder="Your coordinates here (lat,long => each in a new line)"
-        ></textarea>
-        <div class="btn-wrapper">
-          <button type="submit" class="reverse buttons">Reverse Geocode</button>
-          <button type="submit" class="reset buttons">Reset</button>
-        </div>
+      <textarea placeholder="Your addresses will display here" class="myAddresses"></textarea>
+    </div>
+  </section>
 
-        <textarea
-          placeholder="Your addresses will display here"
-          class="myAddresses"
-        ></textarea>
-      </div>
-    </section>
+  <!-- useful links -->
+  <!-- https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple -->
+  <script src="config.js"></script>
+  <script>
+    let API_KEY = config.API_KEY;
+    let googleMapsScript = document.createElement('script');
+    googleMapsScript.setAttribute('src', `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=init&v=weekly`);
+    document.body.appendChild(googleMapsScript);
+  </script>
+</body>
 
-    <!-- useful links -->
-    <!-- https://developers.google.com/maps/documentation/javascript/examples/geocoding-simple -->
-    <script
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=init&v=weekly"
-    ></script>
-  </body>
 </html>
